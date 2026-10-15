@@ -134,6 +134,17 @@ ansible-playbook -i ansible/inventory/hosts.yml ansible/site.yml --limit srv-m72
   depuis le poste de l'administrateur.
 - Les playbooks se lancent comme d'habitude : `-K` pour le mot de passe sudo, et
   l'accord explicite avant tout run réel sur un hôte.
+- **Claude Code :** installé par la Dev Container Feature officielle du modèle. Après
+  « Rebuild Container », lancer `claude` dans le terminal du conteneur et se connecter avec
+  son compte claude.ai (abonnement Pro, Max, Team ou Enterprise). Si le navigateur affiche
+  un code au lieu de revenir au terminal, le coller à l'invite
+  `Paste code here if prompted`. La connexion est conservée dans `~/dev/cache/claude`
+  (monté sur `/root/.claude`, `CLAUDE_CONFIG_DIR` pointe dessus) et survit aux
+  reconstructions. Le conteneur tourne en root : Claude Code refuse donc
+  `--dangerously-skip-permissions`, ce qui garde les confirmations d'actions.
+- **Projet déjà initialisé :** `devinit.sh` n'écrase jamais un fichier existant. Après une
+  évolution du modèle, supprimer `.devcontainer/devcontainer.json` du projet et relancer
+  `devinit.sh <projet> sys`, puis « Rebuild Container ».
 
 ### Dépannage
 
@@ -145,6 +156,7 @@ ansible-playbook -i ansible/inventory/hosts.yml ansible/site.yml --limit srv-m72
 | « Cannot connect to the Docker daemon » au lancement du conteneur | Service Docker rootless arrêté : `systemctl --user start docker` sur le m720q. |
 | `docker.sock` introuvable (montage) | Session SSH sans `XDG_RUNTIME_DIR` : ouvrir une vraie session (Remote-SSH, pas `ssh -T`). |
 | Image `devenv-sys:latest` introuvable | `make build sys` non fait sur le m720q. |
+| Build du conteneur : `Failed to install Node.js and npm` | Ajouter la feature `ghcr.io/devcontainers/features/node:1` avant celle de Claude Code. |
 
 ## Makefile
 
