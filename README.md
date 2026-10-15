@@ -86,15 +86,24 @@ Reconstruire une image (`make build <toolchain>`) quand son Dockerfile change.
 
 ### 3. Pour chaque projet
 
+Dans un terminal VS Code connecté au m720q (hors conteneur, pour que l'agent soit relayé) :
+
 ```bash
-git clone git@github.com:jnicol31/homelab.git ~/dev/projects/homelab   # avec ta clé (agent relayé), pour pouvoir pousser
-~/dev/envs/scripts/devinit.sh homelab sys
+~/dev/envs/scripts/devinit.sh homelab sys git@github.com:jnicol31/homelab.git
 ```
 
-`devinit.sh <projet> <toolchain>` copie le modèle dans
-`~/dev/projects/<projet>/.devcontainer/devcontainer.json` et refuse d'écraser un
-fichier existant. Le modèle peut ensuite être adapté au projet (limites cpu/mémoire,
-extensions, montages).
+`devinit.sh [-f] <projet> <toolchain> [<url git>]` fait en une fois :
+
+- avec l'URL : initialise `~/dev/projects/<projet>` comme clone de ce dépôt (sur sa branche
+  par défaut, avec ta clé via l'agent, pour pouvoir pousser) et exclut `.devcontainer/` de
+  Git sans toucher au dépôt (`.git/info/exclude`). Sans URL, aucun dépôt n'est créé ;
+- copie le modèle dans `~/dev/projects/<projet>/.devcontainer/devcontainer.json`.
+
+Il refuse d'écraser une configuration existante ; `-f` la remplace (utile quand le modèle a
+évolué : `devinit.sh -f homelab sys`, puis « Rebuild Container »). Le dépôt déjà présent est
+laissé tel quel. Le modèle peut ensuite être adapté au projet (limites cpu/mémoire,
+extensions, montages). L'identité Git (`git config user.name` et `user.email`) reste à
+régler une fois, si elle n'est pas globale.
 
 ### 4. Ouvrir le projet dans le conteneur
 
@@ -142,9 +151,8 @@ ansible-playbook -i ansible/inventory/hosts.yml ansible/site.yml --limit srv-m72
   (monté sur `/root/.claude`, `CLAUDE_CONFIG_DIR` pointe dessus) et survit aux
   reconstructions. Le conteneur tourne en root : Claude Code refuse donc
   `--dangerously-skip-permissions`, ce qui garde les confirmations d'actions.
-- **Projet déjà initialisé :** `devinit.sh` n'écrase jamais un fichier existant. Après une
-  évolution du modèle, supprimer `.devcontainer/devcontainer.json` du projet et relancer
-  `devinit.sh <projet> sys`, puis « Rebuild Container ».
+- **Projet déjà initialisé :** après une évolution du modèle, relancer
+  `devinit.sh -f <projet> sys`, puis « Rebuild Container ».
 
 ### Dépannage
 
