@@ -50,12 +50,13 @@ Makefile
       ForwardAgent yes
   ```
 
-### 2. Une fois, sur le m720q
+### 2. Sur le m720q (fait par Ansible)
 
-Dans un terminal VS Code connecté en Remote-SSH (ou en SSH) :
+Le rôle `devhost` du dépôt homelab clone ce dépôt dans `~/dev/envs` et le met à jour
+(sans écraser de modification locale). Il ne construit pas les images : dans un
+terminal VS Code connecté en Remote-SSH,
 
 ```bash
-git clone https://github.com/jnicol31/devenvs ~/dev/envs
 cd ~/dev/envs && make build sys     # construit devenv-sys:latest dans ton Docker rootless
 ```
 
@@ -64,7 +65,7 @@ Reconstruire une image (`make build <toolchain>`) quand son Dockerfile change.
 ### 3. Pour chaque projet
 
 ```bash
-git clone https://github.com/jnicol31/homelab ~/dev/projects/homelab
+git clone git@github.com:jnicol31/homelab.git ~/dev/projects/homelab   # avec ta clé (agent relayé), pour pouvoir pousser
 ~/dev/envs/scripts/devinit.sh homelab sys
 ```
 
