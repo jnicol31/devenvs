@@ -7,6 +7,9 @@ ARG SOPS_SHA256=e5bec3346a873ae91d871550f3e698c1aad962aff462a080e40f25fde17fef6b
 
 FROM debian:trixie-slim
 
+# Un échec en amont d'un pipe (ex. sha256sum) fait échouer le RUN.
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 ARG ANSIBLE_CORE_VERSION
 ARG SOPS_VERSION
 ARG SOPS_SHA256
