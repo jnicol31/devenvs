@@ -151,6 +151,9 @@ ansible-playbook -i ansible/inventory/hosts.yml ansible/site.yml --limit srv-m72
   (monté sur `/root/.claude`, `CLAUDE_CONFIG_DIR` pointe dessus) et survit aux
   reconstructions. Le conteneur tourne en root : Claude Code refuse donc
   `--dangerously-skip-permissions`, ce qui garde les confirmations d'actions.
+- **Supervision :** le conteneur porte le label Docker `home-server.ephemeral=true`
+  (`runArgs`), que la règle `ContainerDown` du dépôt homelab exclut : son arrêt ne déclenche
+  pas d'alerte. À conserver dans les modèles des autres toolchains.
 - **Projet déjà initialisé :** après une évolution du modèle, relancer
   `devinit.sh -f <projet> sys`, puis « Rebuild Container ».
 
