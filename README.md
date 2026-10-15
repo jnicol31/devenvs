@@ -1,6 +1,18 @@
 # devenvs
 Images de compilation et modèles Dev Containers, utilisés depuis VS Code (Windows)
 
+## Makefile
+
+```bash
+make build            # toutes les images (ou : make build sys)
+make push sys         # envoie devenv-sys sur le m720q (HOST=srv-m720q par défaut)
+make check            # hadolint, shellcheck + shfmt, JSON valides
+```
+
+En usage normal, le dépôt est cloné sur le m720q (`~/dev/envs`) et `make build` y
+construit directement dans le Docker rootless de l'utilisateur : `make push` ne sert
+que si l'on construit ailleurs (`docker save | ssh <hôte> docker load`, sans registre).
+
 ## `sys` : contrôleur Ansible
 
 L'image `devenv-sys` sert de machine d'administration : Ansible (`ansible-core`
