@@ -17,12 +17,34 @@ Makefile
 ### 1. Une fois, sur le poste Windows
 
 - Installer VS Code et les extensions **Remote - SSH** et **Dev Containers**.
-- Démarrer l'agent SSH Windows et y charger ta clé (PowerShell administrateur pour la
-  première commande) :
+- Créer le dossier `.ssh` de ton compte, accessible à toi seul (OpenSSH refuse des clés
+  lisibles par d'autres comptes). PowerShell **de ton compte habituel** :
 
   ```powershell
-  Set-Service ssh-agent -StartupType Automatic; Start-Service ssh-agent
-  ssh-add $env:USERPROFILE\.ssh\id_ed25519     # ta clé ; vérifier avec : ssh-add -l
+  mkdir $env:USERPROFILE\.ssh
+  icacls $env:USERPROFILE\.ssh /inheritance:r
+  icacls $env:USERPROFILE\.ssh /grant:r "$($env:USERNAME):(OI)(CI)F"
+  ssh-keygen -t ed25519      # ou copier ta clé, puis lui appliquer les mêmes droits avec icacls
+  ```
+
+- Activer l'agent SSH Windows. Cette étape demande les droits d'administrateur, **une
+  seule fois** : le service tourne en `LocalSystem` et redémarre seul ensuite. Si ton
+  compte n'est pas administrateur, ouvre ce PowerShell avec un compte admin
+  (`runas /user:<admin> powershell`) et n'y lance rien d'autre : `$env:USERPROFILE`
+  désignerait le profil de l'admin.
+
+  ```powershell
+  Get-Service ssh-agent | Set-Service -StartupType Automatic
+  Start-Service ssh-agent
+  ```
+
+- Charger ta clé dans l'agent, depuis **ton compte habituel** : les clés sont stockées par
+  utilisateur, un `ssh-add` fait depuis le compte admin les mettrait dans le profil de
+  l'admin. Elles sont conservées après un redémarrage.
+
+  ```powershell
+  ssh-add $env:USERPROFILE\.ssh\id_ed25519
+  ssh-add -l                 # doit lister ta clé
   ```
 
 - Déclarer le m720q dans `%USERPROFILE%\.ssh\config`. `ForwardAgent yes` est
