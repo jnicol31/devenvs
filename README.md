@@ -156,7 +156,7 @@ ansible-playbook -i ansible/inventory/hosts.yml ansible/site.yml --limit srv-m72
 | « Cannot connect to the Docker daemon » au lancement du conteneur | Service Docker rootless arrêté : `systemctl --user start docker` sur le m720q. |
 | `docker.sock` introuvable (montage) | Session SSH sans `XDG_RUNTIME_DIR` : ouvrir une vraie session (Remote-SSH, pas `ssh -T`). |
 | Image `devenv-sys:latest` introuvable | `make build sys` non fait sur le m720q. |
-| Build du conteneur : `Failed to install Node.js and npm` | Ajouter la feature `ghcr.io/devcontainers/features/node:1` avant celle de Claude Code. |
+| Build du conteneur : `Failed to install Node.js and npm` | La feature Node doit précéder celle de Claude Code (déjà le cas dans le modèle) : projet initialisé avec un ancien modèle, relancer `devinit.sh`. |
 
 ## Makefile
 

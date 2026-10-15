@@ -5,8 +5,13 @@
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
   "remoteUser": "root",
   "features": {
+    "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
   },
+  "overrideFeatureInstallOrder": [
+    "ghcr.io/devcontainers/features/node",
+    "ghcr.io/anthropics/devcontainer-features/claude-code"
+  ],
   "updateRemoteUserUID": false,
   "initializeCommand": "mkdir -p \"${localEnv:HOME}/dev/build/${localWorkspaceFolderBasename}\" \"${localEnv:HOME}/dev/cache/ansible\" \"${localEnv:HOME}/dev/cache/pip\" \"${localEnv:HOME}/dev/cache/ssh\" \"${localEnv:HOME}/dev/cache/claude\" && chmod 0700 \"${localEnv:HOME}/dev/cache/ssh\" \"${localEnv:HOME}/dev/cache/claude\"",
   "mounts": [
