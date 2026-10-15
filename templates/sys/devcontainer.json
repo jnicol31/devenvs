@@ -24,7 +24,8 @@
   ],
   "runArgs": [
     "--cpus=4",
-    "--memory=8g"
+    "--memory=8g",
+    "--label=home-server.ephemeral=true"
   ],
   "customizations": {
     "vscode": {
