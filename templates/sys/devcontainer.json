@@ -5,11 +5,12 @@
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
   "remoteUser": "root",
   "updateRemoteUserUID": false,
-  "initializeCommand": "mkdir -p \"${localEnv:HOME}/dev/build/${localWorkspaceFolderBasename}\" \"${localEnv:HOME}/dev/cache/ansible\" \"${localEnv:HOME}/dev/cache/pip\"",
+  "initializeCommand": "mkdir -p \"${localEnv:HOME}/dev/build/${localWorkspaceFolderBasename}\" \"${localEnv:HOME}/dev/cache/ansible\" \"${localEnv:HOME}/dev/cache/pip\" \"${localEnv:HOME}/dev/cache/ssh\" && chmod 0700 \"${localEnv:HOME}/dev/cache/ssh\"",
   "mounts": [
     "source=${localEnv:HOME}/dev/build/${localWorkspaceFolderBasename},target=/build,type=bind",
     "source=${localEnv:HOME}/dev/cache/ansible,target=/root/.ansible,type=bind",
     "source=${localEnv:HOME}/dev/cache/pip,target=/root/.cache/pip,type=bind",
+    "source=${localEnv:HOME}/dev/cache/ssh,target=/root/.ssh,type=bind",
     "source=${localEnv:XDG_RUNTIME_DIR}/docker.sock,target=/var/run/docker.sock,type=bind"
   ],
   "runArgs": [
@@ -26,5 +27,8 @@
         "foxundermoon.shell-format"
       ]
     }
+  },
+  "containerEnv": {
+    "ANSIBLE_REMOTE_USER": "${localEnv:USER}"
   }
 }
