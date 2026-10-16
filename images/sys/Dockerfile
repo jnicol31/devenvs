@@ -48,6 +48,8 @@ RUN apt-get update \
         shfmt \
         xz-utils \
         yamllint \
+        tig \
+        less \
     && rm -rf /var/lib/apt/lists/*
 
 # ansible-core est épinglé sur la version mineure utilisée sur le poste
