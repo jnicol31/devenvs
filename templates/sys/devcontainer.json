@@ -40,6 +40,7 @@
   },
   "containerEnv": {
     "ANSIBLE_REMOTE_USER": "${localEnv:USER}",
+    "HOST_WORKSPACE": "${localWorkspaceFolder}",
     "CLAUDE_CONFIG_DIR": "/root/.claude"
   }
 }
